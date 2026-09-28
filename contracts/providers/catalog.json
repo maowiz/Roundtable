@@ -1,0 +1,12 @@
+{
+  "catalog_version": "providers.2026-09-09.seed",
+  "note": "Fixed HTTPS endpoint catalog (SEC-03). Adapters refuse any host not listed here. Redirects are never followed.",
+  "providers": [
+    { "id": "openai", "adapter": "openai_responses", "host": "api.openai.com", "path": "/v1/responses", "auth": "bearer" },
+    { "id": "anthropic", "adapter": "anthropic_messages", "host": "api.anthropic.com", "path": "/v1/messages", "auth": "x-api-key", "version_header": "2023-06-01" },
+    { "id": "google", "adapter": "google_generate_content", "host": "generativelanguage.googleapis.com", "path": "/v1beta/models/{model}:generateContent", "auth": "x-goog-api-key" },
+    { "id": "xai", "adapter": "openai_compat", "host": "api.x.ai", "path": "/v1/chat/completions", "auth": "bearer" },
+    { "id": "groq", "adapter": "openai_compat", "host": "api.groq.com", "path": "/openai/v1/chat/completions", "auth": "bearer" },
+    { "id": "openrouter", "adapter": "openai_compat", "host": "openrouter.ai", "path": "/api/v1/chat/completions", "auth": "bearer" }
+  ]
+}

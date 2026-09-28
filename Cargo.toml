@@ -1,0 +1,55 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/rt-core",
+  "crates/rt-schemas",
+  "crates/rt-ledger",
+  "crates/rt-secrets",
+  "crates/rt-envelope",
+  "crates/rt-budget",
+  "crates/rt-testkit",
+  "crates/rt-adapters",
+  "crates/rt-engine",
+  "apps/desktop/src-tauri",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "UNLICENSED"
+publish = false
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+thiserror = "2"
+ulid = { version = "1", features = ["serde"] }
+sha2 = "0.10"
+hex = "0.4"
+time = { version = "0.3", features = ["serde", "formatting", "parsing", "macros"] }
+rusqlite = { version = "0.37", features = ["bundled", "backup"] }
+jsonschema = { version = "0.33", default-features = false }
+keyring = { version = "3", features = ["windows-native"] }
+zeroize = { version = "1", features = ["derive"] }
+rand = "0.9"
+rand_chacha = "0.9"
+proptest = "1"
+tempfile = "3"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time"] }
+tokio-util = "0.7"
+async-trait = "0.1"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "http2"] }
+futures = "0.3"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tauri = { version = "2", features = [] }
+tauri-build = { version = "2", features = [] }
+tauri-plugin-single-instance = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"

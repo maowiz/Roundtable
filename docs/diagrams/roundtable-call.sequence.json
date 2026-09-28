@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "One Model Call, Start to Finish",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1000,
+      606
+    ],
+    "views": [
+      {
+        "id": "prepare",
+        "label": "Prepare in isolation",
+        "focus": [
+          "engine",
+          "ledger",
+          "envelope",
+          "budget"
+        ],
+        "note": "The envelope is built only from committed papers; the budget is reserved before anything leaves the machine."
+      },
+      {
+        "id": "send",
+        "label": "Send with the key",
+        "focus": [
+          "engine",
+          "secrets",
+          "adapter",
+          "provider"
+        ],
+        "note": "The key is read at the last moment, used once, and wiped."
+      },
+      {
+        "id": "accept",
+        "label": "Validate and commit",
+        "focus": [
+          "adapter",
+          "validator",
+          "ledger",
+          "budget"
+        ],
+        "note": "A reply becomes a paper only after schema and semantic checks; cost is settled from real token counts."
+      }
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "Engine",
+      "sublabel": "rt-engine"
+    },
+    {
+      "id": "ledger",
+      "type": "database",
+      "label": "Ledger",
+      "sublabel": "SQLite"
+    },
+    {
+      "id": "envelope",
+      "type": "backend",
+      "label": "Envelope",
+      "sublabel": "rt-envelope"
+    },
+    {
+      "id": "budget",
+      "type": "backend",
+      "label": "Budget",
+      "sublabel": "rt-budget"
+    },
+    {
+      "id": "secrets",
+      "type": "security",
+      "label": "Secrets",
+      "sublabel": "Credential Manager"
+    },
+    {
+      "id": "adapter",
+      "type": "backend",
+      "label": "Adapter",
+      "sublabel": "OpenRouter shape"
+    },
+    {
+      "id": "provider",
+      "type": "cloud",
+      "label": "Provider",
+      "sublabel": "the model"
+    },
+    {
+      "id": "validator",
+      "type": "security",
+      "label": "Validator",
+      "sublabel": "rt-schemas"
+    }
+  ],
+  "segments": [
+    {
+      "from": 172,
+      "to": 252,
+      "label": "tx1 · envelope + ready"
+    },
+    {
+      "from": 258,
+      "to": 308,
+      "label": "tx2 · reserve + intent"
+    },
+    {
+      "from": 314,
+      "to": 420,
+      "label": "wire"
+    },
+    {
+      "from": 426,
+      "to": 534,
+      "label": "tx3 · outcome + paper + settle"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "engine",
+      "to": "ledger",
+      "y": 186,
+      "label": "load only the papers this stage may see",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "engine",
+      "to": "envelope",
+      "y": 214,
+      "label": "build envelope → aliases + digest",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m5",
+      "from": "engine",
+      "to": "ledger",
+      "y": 242,
+      "label": "commit envelope, call = ready",
+      "variant": "security"
+    },
+    {
+      "id": "m6",
+      "from": "engine",
+      "to": "budget",
+      "y": 270,
+      "label": "reserve max cost (ceiling blocks here)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m8",
+      "from": "engine",
+      "to": "ledger",
+      "y": 298,
+      "label": "commit attempt intent, call = in flight",
+      "variant": "security"
+    },
+    {
+      "id": "m9",
+      "from": "engine",
+      "to": "secrets",
+      "y": 326,
+      "label": "read key",
+      "variant": "security"
+    },
+    {
+      "id": "m10",
+      "from": "engine",
+      "to": "adapter",
+      "y": 354,
+      "label": "dispatch(wire request, key)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m11",
+      "from": "adapter",
+      "to": "provider",
+      "y": 382,
+      "label": "HTTPS POST, JSON mode, key wiped after",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m12",
+      "from": "provider",
+      "to": "adapter",
+      "y": 410,
+      "label": "reply + usage + citations",
+      "variant": "return"
+    },
+    {
+      "id": "m13",
+      "from": "adapter",
+      "to": "validator",
+      "y": 438,
+      "label": "raw JSON paper",
+      "variant": "default"
+    },
+    {
+      "id": "m14",
+      "from": "validator",
+      "to": "engine",
+      "y": 466,
+      "label": "accepted, or invalid → schema retry",
+      "variant": "return"
+    },
+    {
+      "id": "m15",
+      "from": "engine",
+      "to": "budget",
+      "y": 494,
+      "label": "settle real tokens (+ search fee)",
+      "variant": "default"
+    },
+    {
+      "id": "m16",
+      "from": "engine",
+      "to": "ledger",
+      "y": 522,
+      "label": "commit outcome, paper, settlement → UI event",
+      "variant": "security"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "engine",
+      "from": 181,
+      "to": 528,
+      "type": "backend"
+    },
+    {
+      "participant": "ledger",
+      "from": 182,
+      "to": 194,
+      "type": "database"
+    },
+    {
+      "participant": "envelope",
+      "from": 210,
+      "to": 222,
+      "type": "backend"
+    },
+    {
+      "participant": "budget",
+      "from": 266,
+      "to": 278,
+      "type": "backend"
+    },
+    {
+      "participant": "secrets",
+      "from": 322,
+      "to": 334,
+      "type": "security"
+    },
+    {
+      "participant": "adapter",
+      "from": 350,
+      "to": 443,
+      "type": "backend"
+    },
+    {
+      "participant": "provider",
+      "from": 378,
+      "to": 415,
+      "type": "cloud"
+    },
+    {
+      "participant": "validator",
+      "from": 434,
+      "to": 471,
+      "type": "security"
+    },
+    {
+      "participant": "ledger",
+      "from": 518,
+      "to": 530,
+      "type": "database"
+    }
+  ]
+}

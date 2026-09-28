@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}
+body{width:1920px;height:1080px;background:#0d1117;color:#e8ecf3;font-family:"Segoe UI",system-ui,sans-serif;padding:40px 72px 44px;display:flex;flex-direction:column;gap:20px}
+h1{font-size:54px;font-weight:700;letter-spacing:-1px}
+.sub{font-size:25px;color:#9aa4b5;margin-top:10px;max-width:1500px;line-height:1.4}
+.sub b{color:#e8ecf3}
+.table{display:grid;grid-template-columns:330px 1fr 1fr;gap:14px;flex:1}
+.head{font-size:20px;font-weight:700;letter-spacing:2px;color:#9aa4b5;padding:0 6px;align-self:end}
+.head.yes{color:#3ddc97}.head.no{color:#ff6b6b}
+.step{background:#161b24;border:2px solid #232b38;border-radius:22px;padding:22px 26px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.step .n{font-size:18px;font-weight:700;letter-spacing:2px;color:#6ea8ff}
+.step .t{font-size:32px;font-weight:700}
+.step .d{font-size:19px;color:#9aa4b5;line-height:1.35}
+.cell{border-radius:22px;padding:18px 20px;display:flex;flex-wrap:wrap;align-content:center;gap:12px}
+.cell.yes{background:#0f2a20;border:2px solid #1f6e4c}
+.cell.no{background:#2a1417;border:2px solid #6e2b31}
+.chip{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:600;padding:10px 16px;border-radius:14px;line-height:1.2}
+.yes .chip{background:#15392b;color:#d9ffec}
+.no .chip{background:#3a1b20;color:#ffd9dc}
+.ic{font-size:24px;font-weight:800;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.yes .ic{background:#3ddc97;color:#07130d}
+.no .ic{background:#ff6b6b;color:#1a0709}
+.chip small{font-size:17px;font-weight:500;opacity:.75;margin-left:4px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rule{background:#141a27;border:2px solid #2b3a5c;border-radius:20px;padding:20px 24px;display:flex;gap:16px;align-items:center}
+.rule .big{font-size:40px}
+.rule b{display:block;font-size:24px}
+.rule span{font-size:18px;color:#9aa4b5}
+</style></head><body>
+<div><h1>How Roundtable manages memory</h1>
+<p class="sub">Every AI call starts with a <b>blank memory</b>. For each call the app packs a <b>sealed envelope</b> with only what that step allows. The AI sees the envelope and nothing else.</p></div>
+
+<div class="table">
+  <div class="head">STEP</div><div class="head yes">✓ IN THE ENVELOPE</div><div class="head no">✗ NEVER SEEN</div>
+
+  <div class="step"><span class="n">STEP 1</span><span class="t">Answer</span><span class="d">Each agent answers alone</span></div>
+  <div class="cell yes"><span class="chip"><span class="ic">✓</span>Your question</span></div>
+  <div class="cell no"><span class="chip"><span class="ic">✗</span>Other agents' answers</span><span class="chip"><span class="ic">✗</span>Any earlier chat</span></div>
+
+  <div class="step"><span class="n">STEP 2</span><span class="t">Review</span><span class="d">Each agent reviews one other answer</span></div>
+  <div class="cell yes"><span class="chip"><span class="ic">✓</span>Your question</span><span class="chip"><span class="ic">✓</span>One other answer <small>as "Answer A-7K2"</small></span></div>
+  <div class="cell no"><span class="chip"><span class="ic">✗</span>Who wrote it</span><span class="chip"><span class="ic">✗</span>Its own answer</span><span class="chip"><span class="ic">✗</span>Other reviews</span></div>
+
+  <div class="step"><span class="n">STEP 3</span><span class="t">Improve</span><span class="d">Each agent fixes its own answer</span></div>
+  <div class="cell yes"><span class="chip"><span class="ic">✓</span>Your question</span><span class="chip"><span class="ic">✓</span>Its own answer</span><span class="chip"><span class="ic">✓</span>Reviews about it <small>names hidden</small></span></div>
+  <div class="cell no"><span class="chip"><span class="ic">✗</span>Other agents' answers</span><span class="chip"><span class="ic">✗</span>Who reviewed it</span></div>
+
+  <div class="step"><span class="n">STEP 4</span><span class="t">Final answer</span><span class="d">One writer combines everything</span></div>
+  <div class="cell yes"><span class="chip"><span class="ic">✓</span>Your question</span><span class="chip"><span class="ic">✓</span>All improved answers <small>shuffled, names hidden</small></span></div>
+  <div class="cell no"><span class="chip"><span class="ic">✗</span>The reviews</span><span class="chip"><span class="ic">✗</span>Who wrote what</span></div>
+</div>
+
+<div class="rules">
+  <div class="rule"><span class="big">🧠</span><div><b>Fresh memory every call</b><span>Nothing is carried over between calls</span></div></div>
+  <div class="rule"><span class="big">🎭</span><div><b>Names become codes</b><span>No AI knows which AI wrote what</span></div></div>
+  <div class="rule"><span class="big">📒</span><div><b>Every envelope is saved</b><span>You can open any one later and check it</span></div></div>
+</div>
+</body></html>

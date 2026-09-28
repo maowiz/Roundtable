@@ -1,0 +1,120 @@
+/* Presentation pass: readable supporting text, theme-safe text colour, roomier first fold. */
+:root{color:var(--text);background:var(--bg);--muted:#6c707d;--subtle:#858b98}
+[data-theme=dark]{--muted:#a6abb8;--subtle:#8b919f}
+.recent-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.page{padding-top:34px}
+.home-heading{padding-bottom:24px}
+.home-heading h1{font-size:42px}
+.composer-body{padding-top:20px}
+.composer-body>textarea{min-height:96px}
+.composer footer{padding:13px 18px}
+.suggestions{margin-bottom:26px}
+.suggestions>button,.suggestions>span{font-size:12px}
+.model-card{padding:18px}
+.model-card>p{font-size:13px;margin-top:6px}
+.model-card h3>span{font-size:11px}
+.model-card-bottom{font-size:11.5px;margin-top:14px}
+.panel-foot{font-size:12px;margin-bottom:26px}
+.recent-card strong{font-size:13px}
+.recent-card p{font-size:12px}
+.home-signoff{margin-top:16px}
+.brand-caption{font-size:11px}
+.sidebar nav>button{font-size:13.5px}
+.sidebar-recents button{font-size:12px}
+.private-card strong,.profile strong{font-size:12.5px}
+.private-card span,.profile small{font-size:11px}
+.eyebrow{font-size:10.5px}
+.section-heading p{font-size:13px}
+.text-button,.primary,.secondary{font-size:13px}
+.sample-badge,.sample-label{font-size:10.5px}
+.cost-note{font-size:12px}
+.cost-note small{font-size:11px}
+.roundtable{height:460px}
+.position-1,.position-3{top:160px}
+.table-seat{width:184px}
+.table-seat strong{font-size:13.5px}
+.table-seat>p{font-size:11px}
+.table-seat footer{font-size:10px}
+.table-center>span{font-size:9px;letter-spacing:1.2px}
+.table-center p{font-size:11px}
+.table-center h2{font-size:24px}
+.table-footer>span,.table-footer .text-button{font-size:11.5px}
+.stage-strip strong{font-size:13px}
+.stage-strip small{font-size:11px}
+.activity-panel .eyebrow,.answer-side .eyebrow{font-size:10px}
+.activity-panel>.muted{font-size:13px}
+.activity-events p{font-size:12px}
+.activity-events small{font-size:10.5px}
+.activity-events{gap:14px}
+.review-progress{margin-top:18px}
+.review-progress p{font-size:12px}
+.isolation-note{margin-top:18px}
+.isolation-note>strong,.isolation-note p{font-size:11.5px}
+.page-heading{margin-bottom:26px}
+.answer-paper{padding:26px 32px 22px}
+.answer-byline strong{font-size:13px}
+.answer-byline div>span{font-size:11px}
+.answer-paper>h2{font-size:31px;margin-top:20px}
+.answer-intro{font-size:14px}
+.answer-points{gap:20px;margin-top:24px}
+.answer-points p{font-size:13px;line-height:1.75}
+.source-link{font-size:11px}
+.next-step{margin-top:22px}
+.next-step p{font-size:13px}
+.next-step>span,.answer-disclaimer{font-size:10.5px}
+.perspective-list strong{font-size:13px}
+.perspective-list div>span{font-size:11px}
+.answer-side .muted,.open-question p{font-size:13px}
+.session-summary>div,.session-summary footer{font-size:12px}
+.open-question>span{font-size:13px}
+.open-question button{font-size:12px}
+.history-text p{font-size:13px}
+.history-text small,.category,.history-meta>span{font-size:11px}
+.history-callout p{font-size:13px}
+.panel-library>button strong{font-size:13px}
+.panel-library>button small{font-size:11px}
+.seat-editor-card p{font-size:13px;line-height:1.7}
+.seat-editor-card footer>span{font-size:11px}
+.final-writer strong{font-size:13.5px}
+.final-writer p{font-size:12px}
+.panel-explainer strong,.panel-explainer p{font-size:12px}
+.settings-nav>button{font-size:13px}
+.settings-section>p,.preference-row p{font-size:13px}
+.settings-content>.muted{font-size:13px}
+.theme-options>button>span,.preference-row h3{font-size:13.5px}
+.enabled-label,.settings-bottom-note{font-size:12px}
+.welcome-benefits h3{font-size:15px}
+.welcome-benefits p{font-size:13.5px}
+.welcome-start>.subtitle{font-size:14.5px}
+.welcome-note{font-size:12px}
+.connection-row div>span{font-size:12px}
+.fine-print{font-size:11.5px}
+@media(max-width:1250px){.table-seat{width:150px}.table-seat>p{font-size:10px}.table-seat footer{font-size:9px}.table-center h2{font-size:20px}.table-center>span{font-size:8px}.table-center p{font-size:9.5px}.stage-strip strong{font-size:11px}.stage-strip small{font-size:9.5px}.model-card>p{font-size:12px}.model-card-bottom{font-size:10px}.activity-events p{font-size:11px}.seat-editor-card p{font-size:12px}.seat-editor-card footer>span{font-size:10px}.enabled-label{font-size:11px}}
+@media(max-height:800px){.home-heading h1{font-size:36px}.page{padding-top:25px}.welcome-benefits p{font-size:12.5px}.welcome-start>.subtitle{font-size:13px}}
+/* Seat sheet: collapsible sections and tuning controls */
+.dialog{overflow:auto}
+.acc{border:1px solid var(--border);border-radius:12px;margin-top:12px;background:var(--surface)}
+.acc-head{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;text-align:left;border-radius:12px}
+.acc-head>span{display:flex;flex-direction:column;gap:3px}
+.acc-head strong{font-size:13.5px}
+.acc-head small{font-size:11.5px;color:var(--muted)}
+.acc-head svg{color:var(--subtle);transition:transform .18s}
+.acc.open .acc-head svg{transform:rotate(180deg)}
+.acc-body{padding:2px 16px 16px}
+.acc-body .prompt-textarea{width:100%;margin-top:0}
+.acc .fine-print{margin-top:10px}
+.range-row{display:flex;gap:18px;align-items:center;justify-content:space-between}
+.range-row strong{font-size:13px}
+.range-row p{font-size:12px;color:var(--muted);margin-top:3px}
+.range-control{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.range-control input{width:180px;accent-color:var(--blue)}
+.range-value{font-variant-numeric:tabular-nums;font-weight:600;min-width:28px;text-align:right;font-size:14px}
+.limit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.num-field{display:flex;flex-direction:column;gap:6px}
+.num-field>span{font-size:12.5px;font-weight:600}
+.num-field>div{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:9px;padding:8px 12px;background:var(--bg)}
+.num-field input{border:0;background:transparent;width:100%;font-size:14px;outline:none;color:var(--text)}
+.num-field input:focus-visible{outline:none}
+.num-field>div:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.num-field em{font-style:normal;font-size:12px;color:var(--muted)}
+.num-field small{font-size:11px;color:var(--muted);line-height:1.5}

@@ -1,0 +1,13 @@
+[package]
+name = "rt-budget"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Price catalog, token estimates, reservations and settlements (BUD-01..07)."
+
+[dependencies]
+rt-core = { path = "../rt-core" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true

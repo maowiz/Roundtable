@@ -1,0 +1,25 @@
+[package]
+name = "rt-adapters"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Provider adapters: envelope -> wire request -> attempt result. Only this layer touches API keys."
+
+[dependencies]
+rt-core = { path = "../rt-core" }
+rt-envelope = { path = "../rt-envelope" }
+rt-schemas = { path = "../rt-schemas" }
+rt-budget = { path = "../rt-budget" }
+rt-secrets = { path = "../rt-secrets" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+async-trait.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+reqwest.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+rt-testkit = { path = "../rt-testkit" }

@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Roundtable Run Lifecycle",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "happy",
+        "label": "A run that completes",
+        "focus": [
+          "validating",
+          "answering",
+          "reviewing",
+          "improving",
+          "synthesizing",
+          "completed"
+        ],
+        "note": "Checks, four stages, done. Every stage change is a committed ledger row."
+      },
+      {
+        "id": "stops",
+        "label": "Stops that need you",
+        "focus": [
+          "paused",
+          "reviewing",
+          "failed"
+        ],
+        "note": "Paused means the app stopped on purpose (budget, attempts, an uncertain call) or was closed. Resume continues from the ledger."
+      },
+      {
+        "id": "ends",
+        "label": "Cancelling",
+        "focus": [
+          "improving",
+          "cancelling",
+          "cancelled"
+        ],
+        "note": "Cancel waits for in-flight requests to settle so every cent is accounted for."
+      }
+    ],
+    "viewBox": [
+      1000,
+      640
+    ]
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Run states"
+    },
+    {
+      "id": "waiting",
+      "label": "Paused, resumable"
+    },
+    {
+      "id": "terminal",
+      "label": "Terminal"
+    }
+  ],
+  "states": [
+    {
+      "id": "validating",
+      "type": "start",
+      "label": "Validating",
+      "sublabel": "keys · prices",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "tag": "preflight"
+    },
+    {
+      "id": "answering",
+      "type": "active",
+      "label": "Answering",
+      "sublabel": "N answers",
+      "lane": "main",
+      "col": 1,
+      "step": "02"
+    },
+    {
+      "id": "reviewing",
+      "type": "active",
+      "label": "Reviewing",
+      "sublabel": "N(N−1) reviews",
+      "lane": "main",
+      "col": 2,
+      "step": "03"
+    },
+    {
+      "id": "improving",
+      "type": "active",
+      "label": "Improving",
+      "sublabel": "N revisions",
+      "lane": "main",
+      "col": 3,
+      "step": "04"
+    },
+    {
+      "id": "synthesizing",
+      "type": "decision",
+      "label": "Synthesizing",
+      "sublabel": "final writer",
+      "lane": "main",
+      "col": 4,
+      "step": "05"
+    },
+    {
+      "id": "paused",
+      "type": "waiting",
+      "label": "Paused",
+      "sublabel": "blocked or closed",
+      "lane": "waiting",
+      "col": 0,
+      "tag": "you resume"
+    },
+    {
+      "id": "cancelling",
+      "type": "waiting",
+      "label": "Cancelling",
+      "sublabel": "calls settle",
+      "lane": "waiting",
+      "col": 1
+    },
+    {
+      "id": "failed",
+      "type": "failure",
+      "label": "Failed",
+      "sublabel": "storage error",
+      "lane": "terminal",
+      "col": 0,
+      "tag": "terminal"
+    },
+    {
+      "id": "cancelled",
+      "type": "failure",
+      "label": "Cancelled",
+      "sublabel": "you stopped it",
+      "lane": "terminal",
+      "col": 1,
+      "tag": "terminal"
+    },
+    {
+      "id": "completed",
+      "type": "success",
+      "label": "Completed",
+      "sublabel": "answer saved",
+      "lane": "terminal",
+      "col": 2,
+      "tag": "done"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "t-answer",
+      "from": "validating",
+      "to": "answering",
+      "label": "preflight ok",
+      "variant": "emphasis",
+      "labelDy": -25
+    },
+    {
+      "id": "t-review",
+      "from": "answering",
+      "to": "reviewing",
+      "label": "all N accepted",
+      "variant": "emphasis",
+      "labelDy": -25
+    },
+    {
+      "id": "t-improve",
+      "from": "reviewing",
+      "to": "improving",
+      "label": "all reviews in",
+      "variant": "emphasis",
+      "labelDy": -25
+    },
+    {
+      "id": "t-synth",
+      "from": "improving",
+      "to": "synthesizing",
+      "label": "all revised",
+      "variant": "emphasis",
+      "labelDy": -25
+    },
+    {
+      "id": "t-done",
+      "from": "synthesizing",
+      "to": "completed",
+      "label": "final accepted",
+      "variant": "emphasis",
+      "route": "drop"
+    },
+    {
+      "id": "t-pause",
+      "from": "reviewing",
+      "to": "paused",
+      "label": "stopped or closed",
+      "variant": "security",
+      "route": "drop",
+      "labelDx": -62
+    },
+    {
+      "id": "t-resume",
+      "from": "paused",
+      "to": "reviewing",
+      "label": "resume",
+      "variant": "dashed",
+      "labelDx": 44
+    },
+    {
+      "id": "t-cancel",
+      "from": "improving",
+      "to": "cancelling",
+      "label": "you press stop",
+      "variant": "security",
+      "route": "drop",
+      "labelDx": 52
+    },
+    {
+      "id": "t-cancelled",
+      "from": "cancelling",
+      "to": "cancelled",
+      "label": "settled",
+      "route": "drop"
+    },
+    {
+      "id": "t-fail",
+      "from": "paused",
+      "to": "failed",
+      "label": "unrecoverable",
+      "variant": "security",
+      "route": "drop"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+[package]
+name = "roundtable-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Roundtable AI desktop host: narrow IPC over the Rust core."
+
+[lib]
+name = "roundtable_desktop"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+rt-core = { path = "../../../crates/rt-core" }
+rt-ledger = { path = "../../../crates/rt-ledger" }
+rt-secrets = { path = "../../../crates/rt-secrets" }
+rt-budget = { path = "../../../crates/rt-budget" }
+rt-adapters = { path = "../../../crates/rt-adapters" }
+rt-engine = { path = "../../../crates/rt-engine" }
+rt-envelope = { path = "../../../crates/rt-envelope" }
+rt-schemas = { path = "../../../crates/rt-schemas" }
+tauri.workspace = true
+tauri-plugin-single-instance.workspace = true
+tauri-plugin-dialog.workspace = true
+tauri-plugin-opener.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true

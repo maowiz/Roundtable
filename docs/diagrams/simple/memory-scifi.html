@@ -1,0 +1,164 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}
+:root{--bg:#060a13;--panel:#0b1220;--line:#1a2538;--txt:#e6edf7;--dim:#8793a8;--cy:#22d3ee;--gr:#34d399;--ro:#fb7185;--vi:#a78bfa;--am:#fbbf24}
+body{width:1920px;background:var(--bg);color:var(--txt);font-family:"Cascadia Mono","Cascadia Code",Consolas,monospace;padding:46px 56px 50px;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(34,211,238,.10),transparent 60%);pointer-events:none}
+.tag{font-size:17px;letter-spacing:4px;color:var(--cy);text-shadow:0 0 12px rgba(34,211,238,.6)}
+h1{font-family:"Segoe UI",system-ui,sans-serif;font-size:50px;font-weight:700;margin-top:10px;letter-spacing:-.5px}
+.sub{font-family:"Segoe UI",system-ui,sans-serif;font-size:23px;color:var(--dim);margin-top:10px;line-height:1.45;max-width:1650px}
+.sub b{color:var(--txt)}
+.sec{margin-top:34px;border:1.5px dashed #2a3a55;border-radius:22px;padding:26px 28px 28px;background:rgba(11,18,32,.72);position:relative}
+.sec>.lab{position:absolute;top:-15px;left:26px;background:var(--bg);padding:2px 14px;font-size:18px;letter-spacing:3px;color:var(--dim)}
+.sec>.lab b{color:var(--cy)}
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(6,1fr);gap:34px;position:relative}
+.node{border:2px solid;border-radius:16px;padding:18px 18px 18px;position:relative;min-height:212px;display:flex;flex-direction:column;gap:8px}
+.node .no{font-size:15px;letter-spacing:2px;opacity:.9}
+.node .t{font-size:24px;font-weight:700}
+.node .m{font-size:15px;padding:3px 9px;border-radius:7px;align-self:flex-start;border:1px solid}
+.node .d{font-family:"Segoe UI",system-ui,sans-serif;font-size:17.5px;color:#b9c3d4;line-height:1.38}
+.node::after{content:"";position:absolute;right:-36px;top:50%;width:34px;height:2px;background:currentColor;opacity:.8}
+.node::before{content:"";position:absolute;right:-37px;top:calc(50% - 7px);border-left:12px solid currentColor;border-top:8px solid transparent;border-bottom:8px solid transparent;opacity:.9}
+.node:last-child::after,.node:last-child::before{display:none}
+.c-vi{color:var(--vi);border-color:var(--vi);background:#1b1535;box-shadow:0 0 24px rgba(167,139,250,.22)}
+.c-ro{color:var(--ro);border-color:var(--ro);background:#2a1020;box-shadow:0 0 24px rgba(251,113,133,.22)}
+.c-gr{color:var(--gr);border-color:var(--gr);background:#0c2620;box-shadow:0 0 24px rgba(52,211,153,.22)}
+.c-am{color:var(--am);border-color:var(--am);background:#2a200b;box-shadow:0 0 24px rgba(251,191,36,.2)}
+.c-cy{color:var(--cy);border-color:var(--cy);background:#0a2330;box-shadow:0 0 24px rgba(34,211,238,.22)}
+.node .t,.node .d{color:inherit}.node .t{color:var(--txt)}.node .d{color:#b9c3d4}
+.loop{margin-top:18px;display:flex;align-items:center;gap:14px;font-size:17px;color:var(--vi)}
+.loop .bar{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--vi) 0 10px,transparent 10px 18px)}
+.pcline{margin-top:14px;display:flex;gap:18px;font-size:16px;color:var(--dim)}
+.pcline span{padding:5px 12px;border-radius:8px;border:1px solid #2a3a55}
+.pcline .pc{color:var(--gr);border-color:#1f6e4c}.pcline .net{color:var(--am);border-color:#7a5b14}
+/* matrix */
+.mx{display:grid;grid-template-columns:400px repeat(4,1fr);gap:10px}
+.hd{border:2px solid var(--ro);background:#2a1020;border-radius:14px;padding:14px 16px;box-shadow:0 0 20px rgba(251,113,133,.18)}
+.hd .e{font-size:15px;letter-spacing:2px;color:var(--ro)}
+.hd .s{font-family:"Segoe UI",system-ui,sans-serif;font-size:26px;font-weight:700;margin-top:3px}
+.hd .w{font-family:"Segoe UI",system-ui,sans-serif;font-size:16px;color:#c9b4bb;margin-top:3px}
+.corner{display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:0 6px 6px}
+.corner .k{font-size:15px;letter-spacing:2px;color:var(--dim)}
+.corner .lg{display:flex;gap:14px;font-size:15px;flex-wrap:wrap}
+.rowlab{background:#0e1829;border:1.5px solid #243552;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;font-family:"Segoe UI",system-ui,sans-serif;font-size:20px;font-weight:600}
+.rowlab i{font-style:normal;font-size:22px;width:30px;text-align:center}
+.cell{border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;font-family:"Segoe UI",system-ui,sans-serif;font-size:17px;line-height:1.3;min-height:62px}
+.cell .ic{font-family:"Cascadia Mono",Consolas,monospace;font-weight:800;font-size:15px;padding:4px 8px;border-radius:7px;flex-shrink:0;letter-spacing:1px}
+.in{background:#0c2620;border:1.5px solid #1f7a55;color:#d6fbe9}
+.in .ic{background:var(--gr);color:#04150e;box-shadow:0 0 12px rgba(52,211,153,.6)}
+.bl{background:#220d15;border:1.5px solid #5e2232;color:#f4c9d1}
+.bl .ic{background:var(--ro);color:#1d060b;box-shadow:0 0 12px rgba(251,113,133,.5)}
+.na{background:transparent;border:1.5px dashed #2a3a55;color:#6f7b90}
+.na .ic{background:#1a2538;color:#8793a8}
+code{font-family:"Cascadia Mono",Consolas,monospace;color:var(--cy);font-size:16px}
+/* rules */
+.rules{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.rule{border:2px solid;border-radius:16px;padding:18px 18px}
+.rule .h{font-size:19px;font-weight:800;letter-spacing:2px}
+.rule p{font-family:"Segoe UI",system-ui,sans-serif;font-size:17.5px;color:#b9c3d4;margin-top:8px;line-height:1.4}
+.rule p b{color:var(--txt)}
+.foot{margin-top:26px;text-align:center;font-family:"Segoe UI",system-ui,sans-serif;font-size:24px;color:var(--dim)}
+.foot b{color:var(--gr)}
+</style></head><body>
+
+<div class="tag">ROUNDTABLE // MEMORY CONTROL SYSTEM</div>
+<h1>How Roundtable controls what each AI remembers</h1>
+<p class="sub">AI models have <b>no memory between calls</b>. So the memory lives in the app, on your PC. For every single call the app packs a <b>sealed envelope</b> with only what that step allows. The AI reads it, replies, and forgets everything.</p>
+
+<!-- A: life of one call -->
+<div class="sec">
+  <div class="lab"><b>A</b> / THE LIFE OF ONE CALL · happens 21 times in a 4-agent run</div>
+  <div class="pipe">
+    <div class="node c-vi"><span class="no">01 · STORE</span><span class="t">Memory vault</span><span class="m">rt-ledger · SQLite</span><span class="d">Holds everything: every answer, review, cost. Stays on your PC.</span></div>
+    <div class="node c-ro"><span class="no">02 · FILTER</span><span class="t">Gatekeeper</span><span class="m">rt-envelope</span><span class="d">Takes out only what this step allows. Names become codes. Order is shuffled.</span></div>
+    <div class="node c-ro"><span class="no">03 · SEAL</span><span class="t">Seal &amp; record</span><span class="m">rt-envelope + rt-ledger</span><span class="d">Envelope gets a fingerprint (SHA-256) and a copy is saved before it is sent.</span></div>
+    <div class="node c-am"><span class="no">04 · THINK</span><span class="t">The AI</span><span class="m">rt-adapters → OpenRouter</span><span class="d">Starts with a blank memory. Sees the envelope only. Replies, then forgets.</span></div>
+    <div class="node c-gr"><span class="no">05 · CHECK</span><span class="t">Reply checker</span><span class="m">rt-schemas</span><span class="d">Reply must follow the format and may only mention codes it was given.</span></div>
+    <div class="node c-vi"><span class="no">06 · SAVE</span><span class="t">Back to vault</span><span class="m">rt-ledger</span><span class="d">Checked reply saved. It becomes material for the next step's envelopes.</span></div>
+  </div>
+  <div class="loop"><span>↺ next step</span><span class="bar"></span><span>the vault grows, but each AI still only gets its own envelope</span></div>
+  <div class="pcline"><span class="pc">■ steps 01, 02, 03, 05, 06 run on your PC</span><span class="net">■ only step 04 goes to the internet: one envelope, over HTTPS</span></div>
+</div>
+
+<!-- B: matrix -->
+<div class="sec">
+  <div class="lab"><b>B</b> / WHAT GOES INTO EACH ENVELOPE · built by rt-envelope</div>
+  <div class="mx">
+    <div class="corner"><span class="k">WHAT IS IN THE VAULT</span>
+      <div class="lg"><span style="color:var(--gr)">■ IN = sent</span><span style="color:var(--ro)">■ BLOCKED</span><span style="color:#6f7b90">□ not made yet</span></div></div>
+    <div class="hd"><div class="e">ENVELOPE 1</div><div class="s">Answer</div><div class="w">each agent · 4 calls</div></div>
+    <div class="hd"><div class="e">ENVELOPE 2</div><div class="s">Review</div><div class="w">each agent × each other · 12 calls</div></div>
+    <div class="hd"><div class="e">ENVELOPE 3</div><div class="s">Improve</div><div class="w">each agent · 4 calls</div></div>
+    <div class="hd"><div class="e">ENVELOPE 4</div><div class="s">Final answer</div><div class="w">final writer · 1 call</div></div>
+
+    <div class="rowlab"><i>📜</i>Its system prompt</div>
+    <div class="cell in"><span class="ic">IN</span>its Answer prompt</div>
+    <div class="cell in"><span class="ic">IN</span>its Review prompt</div>
+    <div class="cell in"><span class="ic">IN</span>its Improve prompt</div>
+    <div class="cell in"><span class="ic">IN</span>the writer's prompt</div>
+
+    <div class="rowlab"><i>❓</i>Your question</div>
+    <div class="cell in"><span class="ic">IN</span>yes</div>
+    <div class="cell in"><span class="ic">IN</span>yes</div>
+    <div class="cell in"><span class="ic">IN</span>yes</div>
+    <div class="cell in"><span class="ic">IN</span>yes</div>
+
+    <div class="rowlab"><i>✍️</i>Its own answer</div>
+    <div class="cell na"><span class="ic">··</span>writing it now</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>judges others with a clean mind</div>
+    <div class="cell in"><span class="ic">IN</span>yes, so it can fix it</div>
+    <div class="cell na"><span class="ic">··</span>not an author</div>
+
+    <div class="rowlab"><i>👥</i>Other agents' answers</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>thinks alone, no copying</div>
+    <div class="cell in"><span class="ic">IN</span>exactly ONE, as <code>A-7K2M9QXP</code></div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>only feedback, not rivals</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>gets improved versions instead</div>
+
+    <div class="rowlab"><i>🔍</i>Reviews of its answer</div>
+    <div class="cell na"><span class="ic">··</span>none yet</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>other reviews hidden</div>
+    <div class="cell in"><span class="ic">IN</span>all of them, shuffled, as <code>R-…</code></div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>writer never sees reviews</div>
+
+    <div class="rowlab"><i>✨</i>Improved answers</div>
+    <div class="cell na"><span class="ic">··</span>none yet</div>
+    <div class="cell na"><span class="ic">··</span>none yet</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>others' fixes hidden</div>
+    <div class="cell in"><span class="ic">IN</span>all of them, shuffled, as <code>C-…</code></div>
+
+    <div class="rowlab"><i>🏷️</i>Who wrote what</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>never</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>code only, model names scrubbed</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>reviewers are codes</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>authors are codes</div>
+
+    <div class="rowlab"><i>💬</i>Earlier calls / chat</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>blank memory</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>blank memory</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>blank memory</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>blank memory</div>
+
+    <div class="rowlab"><i>🔑</i>Your API key</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>stays in Windows vault</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>stays in Windows vault</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>stays in Windows vault</div>
+    <div class="cell bl"><span class="ic">BLOCKED</span>stays in Windows vault</div>
+  </div>
+</div>
+
+<!-- C: rules -->
+<div class="sec">
+  <div class="lab"><b>C</b> / THE 5 MEMORY RULES · enforced by code, not by asking the AI</div>
+  <div class="rules">
+    <div class="rule c-cy"><div class="h">01 BLANK MEMORY</div><p>Every call is a <b>brand-new conversation</b>. Nothing carries over between calls or runs.</p></div>
+    <div class="rule c-ro"><div class="h">02 CODE NAMES</div><p>Authors become codes like <b style="white-space:nowrap">A-7K2M9QXP</b>. Model names inside the text are scrubbed too.</p></div>
+    <div class="rule c-am"><div class="h">03 SHUFFLED</div><p>Reviews and improved answers arrive in <b>random order</b>, so position gives nothing away.</p></div>
+    <div class="rule c-gr"><div class="h">04 CHECKED</div><p>A reply that mentions a code it <b>was not given</b> is rejected by rt-schemas.</p></div>
+    <div class="rule c-vi"><div class="h">05 PROVABLE</div><p>Every envelope is <b>fingerprinted and saved</b>. We can show exactly what each AI saw.</p></div>
+  </div>
+</div>
+
+<p class="foot">In one line: <b>the AI has no memory; the app is the memory, and it gives each AI only what that step needs.</b></p>
+</body></html>

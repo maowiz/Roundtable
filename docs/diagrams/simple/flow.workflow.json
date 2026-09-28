@@ -1,0 +1,366 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "How a Roundtable run flows",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "steps",
+        "label": "The 4 steps",
+        "focus": [
+          "question",
+          "answer",
+          "review",
+          "improve",
+          "synth",
+          "final"
+        ],
+        "note": "Answer alone, review others without names, improve your own, then one writer combines."
+      },
+      {
+        "id": "net",
+        "label": "Safety net",
+        "focus": [
+          "preflight",
+          "reserve",
+          "settle",
+          "retry",
+          "blocked"
+        ],
+        "note": "Money is checked before every call; problems retry by themselves; a pause waits for you."
+      },
+      {
+        "id": "saved",
+        "label": "What is saved",
+        "focus": [
+          "ledger",
+          "papers",
+          "sources"
+        ],
+        "note": "Everything each AI saw and said is kept on your PC."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "you",
+      "label": "You"
+    },
+    {
+      "id": "stages",
+      "label": "The 4 steps"
+    },
+    {
+      "id": "guard",
+      "label": "Safety net",
+      "variant": "exception"
+    },
+    {
+      "id": "records",
+      "label": "Saved on your PC"
+    }
+  ],
+  "phases": [
+    {
+      "id": "setup",
+      "label": "Set up",
+      "fromCol": 0,
+      "toCol": 0
+    },
+    {
+      "id": "deliberate",
+      "label": "Deliberate in isolation",
+      "fromCol": 1,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "done",
+      "label": "Result",
+      "fromCol": 5,
+      "toCol": 5
+    }
+  ],
+  "groups": [
+    {
+      "id": "round",
+      "label": "21 calls for 4 agents",
+      "lane": "stages",
+      "fromCol": 1,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "recovery",
+      "label": "Handles problems",
+      "lane": "guard",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "security"
+    }
+  ],
+  "mainPath": [
+    "question",
+    "preflight",
+    "answer",
+    "review",
+    "improve",
+    "synth",
+    "final"
+  ],
+  "nodes": [
+    {
+      "id": "question",
+      "lane": "you",
+      "col": 0,
+      "type": "external",
+      "label": "Your question",
+      "sublabel": "+ spending limit",
+      "width": 132
+    },
+    {
+      "id": "final",
+      "lane": "you",
+      "col": 5,
+      "type": "frontend",
+      "label": "Final answer",
+      "sublabel": "agreed + disputed",
+      "width": 132
+    },
+    {
+      "id": "preflight",
+      "lane": "stages",
+      "col": 0,
+      "type": "security",
+      "label": "Pre-check",
+      "sublabel": "keys · prices · cost",
+      "width": 132
+    },
+    {
+      "id": "answer",
+      "lane": "stages",
+      "col": 1,
+      "type": "backend",
+      "label": "1 · Answer",
+      "sublabel": "each agent alone",
+      "width": 132
+    },
+    {
+      "id": "review",
+      "lane": "stages",
+      "col": 2,
+      "type": "backend",
+      "label": "2 · Review",
+      "sublabel": "check others, no names",
+      "width": 132
+    },
+    {
+      "id": "improve",
+      "lane": "stages",
+      "col": 3,
+      "type": "backend",
+      "label": "3 · Improve",
+      "sublabel": "fix own answer",
+      "width": 132
+    },
+    {
+      "id": "synth",
+      "lane": "stages",
+      "col": 4,
+      "type": "backend",
+      "label": "4 · Final writer",
+      "sublabel": "combine into one",
+      "width": 132
+    },
+    {
+      "id": "reserve",
+      "lane": "guard",
+      "col": 1,
+      "type": "security",
+      "label": "Budget guard",
+      "sublabel": "pay only within limit",
+      "width": 132
+    },
+    {
+      "id": "retry",
+      "lane": "guard",
+      "col": 3,
+      "type": "messagebus",
+      "label": "Retry",
+      "sublabel": "cut off or lost reply",
+      "width": 132
+    },
+    {
+      "id": "blocked",
+      "lane": "guard",
+      "col": 4,
+      "type": "security",
+      "label": "Paused",
+      "sublabel": "you press Resume",
+      "width": 132
+    },
+    {
+      "id": "settle",
+      "lane": "records",
+      "col": 1,
+      "type": "database",
+      "label": "Real cost",
+      "sublabel": "as charged",
+      "width": 132
+    },
+    {
+      "id": "ledger",
+      "lane": "records",
+      "col": 2,
+      "type": "database",
+      "label": "Envelopes",
+      "sublabel": "what each AI saw",
+      "width": 132
+    },
+    {
+      "id": "papers",
+      "lane": "records",
+      "col": 3,
+      "type": "database",
+      "label": "Checked replies",
+      "sublabel": "valid only",
+      "width": 132
+    },
+    {
+      "id": "sources",
+      "lane": "records",
+      "col": 4,
+      "type": "database",
+      "label": "Web sources",
+      "sublabel": "if search is on",
+      "width": 132
+    }
+  ],
+  "edges": [
+    {
+      "id": "q-pre",
+      "from": "question",
+      "to": "preflight",
+      "label": "start",
+      "role": "main"
+    },
+    {
+      "id": "pre-ans",
+      "from": "preflight",
+      "to": "answer",
+      "label": "go",
+      "role": "main"
+    },
+    {
+      "id": "ans-rev",
+      "from": "answer",
+      "to": "review",
+      "label": "answers",
+      "role": "main"
+    },
+    {
+      "id": "rev-imp",
+      "from": "review",
+      "to": "improve",
+      "label": "reviews",
+      "role": "main"
+    },
+    {
+      "id": "imp-syn",
+      "from": "improve",
+      "to": "synth",
+      "label": "improved",
+      "role": "main"
+    },
+    {
+      "id": "syn-fin",
+      "from": "synth",
+      "to": "final",
+      "label": "done",
+      "role": "main"
+    },
+    {
+      "id": "ans-reserve",
+      "from": "answer",
+      "to": "reserve",
+      "label": "every call",
+      "role": "branch"
+    },
+    {
+      "id": "reserve-settle",
+      "from": "reserve",
+      "to": "settle",
+      "label": "after reply",
+      "role": "branch"
+    },
+    {
+      "id": "imp-retry",
+      "from": "improve",
+      "to": "retry",
+      "label": "problem",
+      "role": "error"
+    },
+    {
+      "id": "retry-blocked",
+      "from": "retry",
+      "to": "blocked",
+      "label": "3 tries used",
+      "role": "error"
+    },
+    {
+      "id": "blocked-improve",
+      "from": "blocked",
+      "to": "improve",
+      "label": "resume",
+      "role": "return"
+    },
+    {
+      "id": "rev-ledger",
+      "from": "review",
+      "to": "ledger",
+      "label": "saved",
+      "role": "async"
+    },
+    {
+      "id": "imp-papers",
+      "from": "improve",
+      "to": "papers",
+      "label": "saved",
+      "role": "async"
+    },
+    {
+      "id": "syn-sources",
+      "from": "synth",
+      "to": "sources",
+      "label": "saved",
+      "role": "async"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "The steps",
+      "items": [
+        "Answer · Review · Improve · Final",
+        "Each call starts with blank memory"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Money",
+      "items": [
+        "Checked before every call",
+        "Real cost from OpenRouter"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Never lost",
+      "items": [
+        "Retries by itself",
+        "Resume anytime, nothing paid twice"
+      ]
+    }
+  ]
+}

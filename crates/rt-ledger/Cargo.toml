@@ -1,0 +1,18 @@
+[package]
+name = "rt-ledger"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "SQLite ledger: single writer, migrations, backups, scoped deletion."
+
+[dependencies]
+rt-core = { path = "../rt-core" }
+rusqlite.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+time.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

@@ -1,0 +1,20 @@
+# build outputs
+target/
+node_modules/
+dist/
+*.log
+# local data and scratch
+tmp/
+output/ui/whatsapp/
+demo/*.lnk
+.env
+*.local
+
+# third-party repos cloned for reading only
+research/
+
+# local-only (not published)
+output/
+.claude/
+.gitnexus/
+Open GitNexus Graph.cmd

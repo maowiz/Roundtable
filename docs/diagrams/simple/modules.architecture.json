@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Inside Roundtable: the modules",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "path",
+        "label": "Question to answer",
+        "focus": [
+          "user",
+          "ui",
+          "host",
+          "engine",
+          "envelope",
+          "adapters",
+          "openrouter"
+        ],
+        "note": "The question goes through the front door to the engine, which packs an envelope and sends it out."
+      },
+      {
+        "id": "memory",
+        "label": "Memory guard",
+        "focus": [
+          "engine",
+          "envelope",
+          "ledger",
+          "schemas"
+        ],
+        "note": "Envelopes are built only from saved records; replies are checked before they are saved."
+      },
+      {
+        "id": "safety",
+        "label": "Keys and money",
+        "focus": [
+          "secrets",
+          "budget",
+          "ledger",
+          "engine"
+        ],
+        "note": "The key stays locked in Windows; every call is paid for only within the limit."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "You",
+      "sublabel": "types a question",
+      "pos": [
+        30,
+        210
+      ],
+      "size": [
+        110,
+        52
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "App screens",
+      "sublabel": "React · Tauri",
+      "pos": [
+        180,
+        210
+      ],
+      "size": [
+        130,
+        54
+      ]
+    },
+    {
+      "id": "host",
+      "type": "security",
+      "label": "Front door",
+      "sublabel": "Tauri · 26 commands",
+      "pos": [
+        350,
+        210
+      ],
+      "size": [
+        140,
+        54
+      ]
+    },
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "Engine",
+      "sublabel": "rt-engine · 4 steps",
+      "pos": [
+        540,
+        210
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "envelope",
+      "type": "backend",
+      "label": "Envelope packer",
+      "sublabel": "rt-envelope · memory",
+      "pos": [
+        540,
+        80
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "schemas",
+      "type": "security",
+      "label": "Reply checker",
+      "sublabel": "rt-schemas",
+      "pos": [
+        740,
+        80
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "budget",
+      "type": "backend",
+      "label": "Budget guard",
+      "sublabel": "rt-budget · limit",
+      "pos": [
+        540,
+        340
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "ledger",
+      "type": "database",
+      "label": "Ledger",
+      "sublabel": "rt-ledger · SQLite",
+      "pos": [
+        350,
+        340
+      ],
+      "size": [
+        140,
+        54
+      ]
+    },
+    {
+      "id": "secrets",
+      "type": "security",
+      "label": "Key vault",
+      "sublabel": "rt-secrets · Windows",
+      "pos": [
+        350,
+        80
+      ],
+      "size": [
+        140,
+        54
+      ]
+    },
+    {
+      "id": "adapters",
+      "type": "backend",
+      "label": "AI connector",
+      "sublabel": "rt-adapters",
+      "pos": [
+        740,
+        210
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "openrouter",
+      "type": "cloud",
+      "label": "OpenRouter",
+      "sublabel": "Gemini·GLM·DeepSeek·Qwen",
+      "pos": [
+        920,
+        210
+      ],
+      "size": [
+        150,
+        54
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Rust core · runs on your PC",
+      "wraps": [
+        "host",
+        "engine",
+        "envelope",
+        "schemas",
+        "budget",
+        "ledger",
+        "secrets",
+        "adapters"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "user-ui",
+      "from": "user",
+      "to": "ui",
+      "label": "asks",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "ui-host",
+      "from": "ui",
+      "to": "host",
+      "label": "clicks",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "host-engine",
+      "from": "host",
+      "to": "engine",
+      "label": "start · stop",
+      "variant": "emphasis",
+      "labelAt": [
+        515,
+        320
+      ]
+    },
+    {
+      "id": "engine-envelope",
+      "from": "engine",
+      "to": "envelope",
+      "label": "pack",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        690,
+        160
+      ]
+    },
+    {
+      "id": "envelope-schemas",
+      "from": "envelope",
+      "to": "schemas",
+      "label": "rules",
+      "labelDy": -19
+    },
+    {
+      "id": "schemas-engine",
+      "from": "schemas",
+      "to": "engine",
+      "label": "good reply",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        790,
+        160
+      ]
+    },
+    {
+      "id": "engine-adapters",
+      "from": "engine",
+      "to": "adapters",
+      "label": "send",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "adapters-openrouter",
+      "from": "adapters",
+      "to": "openrouter",
+      "label": "HTTPS",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "engine-budget",
+      "from": "engine",
+      "to": "budget",
+      "label": "check $",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        690,
+        300
+      ]
+    },
+    {
+      "id": "engine-ledger",
+      "from": "engine",
+      "to": "ledger",
+      "label": "save all",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          615,
+          300
+        ],
+        [
+          420,
+          300
+        ]
+      ],
+      "labelAt": [
+        505,
+        290
+      ]
+    },
+    {
+      "id": "engine-secrets",
+      "from": "engine",
+      "to": "secrets",
+      "label": "read key",
+      "variant": "security",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "via": [
+        [
+          515,
+          237
+        ],
+        [
+          515,
+          160
+        ],
+        [
+          420,
+          160
+        ]
+      ],
+      "labelAt": [
+        465,
+        178
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "9 Rust modules",
+      "items": [
+        "rt-core: shared rules and types",
+        "rt-engine, rt-envelope, rt-schemas",
+        "rt-budget, rt-ledger, rt-secrets, rt-adapters"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Safety built in",
+      "items": [
+        "Envelope packer decides what AIs see",
+        "Budget guard stops overspending",
+        "Key never leaves the Windows vault"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Tested",
+      "items": [
+        "90 automated tests",
+        "Every run recorded in the ledger",
+        "Resume any paused run"
+      ]
+    }
+  ]
+}

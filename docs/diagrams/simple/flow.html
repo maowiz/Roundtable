@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}
+body{width:1920px;height:1080px;background:#0d1117;color:#e8ecf3;font-family:'Segoe UI',system-ui,sans-serif;padding:54px 64px;display:flex;flex-direction:column;justify-content:center;gap:40px}
+h1{font-size:54px;font-weight:700;letter-spacing:-1px}
+.sub{font-size:25px;color:#9aa4b5;margin-top:10px}
+.flow{display:grid;grid-template-columns:1fr 56px 1fr 56px 1fr 56px 1fr 56px 1fr 56px 1fr;align-items:stretch}
+.arrow{display:flex;align-items:center;justify-content:center;font-size:48px;color:#4b5a75;font-weight:300}
+.box{border-radius:24px;padding:26px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;border:2px solid #232b38;background:#161b24}
+.box .n{font-size:17px;font-weight:700;letter-spacing:2px;color:#6ea8ff}
+.box .t{font-size:30px;font-weight:700;line-height:1.15}
+.box .d{font-size:19px;color:#9aa4b5;line-height:1.35}
+.box .calls{margin-top:auto;font-size:17px;font-weight:700;color:#c7d2e3;background:#222b3a;border-radius:999px;padding:6px 14px}
+.you{background:#13233d;border-color:#2d5ea8}
+.final{background:#0f2a20;border-color:#1f6e4c}
+.final .n{color:#3ddc97}
+.faces{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:190px}
+.f{width:44px;height:44px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#0d1117}
+.g{background:#6ea8ff}.l{background:#3ddc97}.k{background:#e0a27a}.q{background:#b79cff}.w{background:#ffd166}
+.big{font-size:52px;line-height:1}
+.pair{font-size:17px;color:#c7d2e3;line-height:1.5}
+.net{background:#141a27;border:2px solid #2b3a5c;border-radius:24px;padding:26px 30px;display:flex;flex-direction:column;gap:18px}
+.net h2{font-size:28px}
+.net h2 span{font-size:20px;color:#9aa4b5;font-weight:500;margin-left:10px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.s{background:#1b2333;border-radius:18px;padding:18px;display:flex;gap:14px;align-items:center}
+.s .num{width:42px;height:42px;border-radius:50%;background:#6ea8ff;color:#0d1117;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s b{display:block;font-size:21px}
+.s span{font-size:16px;color:#9aa4b5}
+.facts{display:flex;gap:18px}
+.fact{flex:1;background:#161b24;border:2px solid #232b38;border-radius:18px;padding:16px 22px;font-size:21px;color:#c7d2e3}
+.fact b{color:#e8ecf3;font-size:26px;margin-right:8px}
+</style></head><body>
+<div><h1>How a Roundtable run works</h1><p class="sub">Four AIs think alone, check each other anonymously, improve, and one writer brings it together.</p></div>
+
+<div class="flow">
+  <div class="box you"><span class="n">START</span><span class="big">🙋</span><span class="t">You ask</span><span class="d">Your question and a spending limit</span></div>
+  <div class="arrow">➜</div>
+  <div class="box"><span class="n">STEP 1</span><div class="faces"><span class="f g">G</span><span class="f l">G</span><span class="f k">D</span><span class="f q">Q</span></div><span class="t">Answer</span><span class="d">Each agent answers on its own</span><span class="calls">4 calls</span></div>
+  <div class="arrow">➜</div>
+  <div class="box"><span class="n">STEP 2</span><div class="pair">G checks D<br>D checks Q<br>Q checks G …</div><span class="t">Review</span><span class="d">Every agent checks every other answer, without names</span><span class="calls">12 calls</span></div>
+  <div class="arrow">➜</div>
+  <div class="box"><span class="n">STEP 3</span><div class="faces"><span class="f g">G</span><span class="f l">G</span><span class="f k">D</span><span class="f q">Q</span></div><span class="t">Improve</span><span class="d">Each agent fixes its own answer using its reviews</span><span class="calls">4 calls</span></div>
+  <div class="arrow">➜</div>
+  <div class="box"><span class="n">STEP 4</span><div class="faces"><span class="f w">✍</span></div><span class="t">Final writer</span><span class="d">Combines the improved answers into one</span><span class="calls">1 call</span></div>
+  <div class="arrow">➜</div>
+  <div class="box final"><span class="n">RESULT</span><span class="big">✅</span><span class="t">One clear answer</span><span class="d">Plus what is agreed and what is still disputed</span></div>
+</div>
+
+<div class="net">
+  <h2>Behind every single call <span>the same five checks, every time</span></h2>
+  <div class="steps">
+    <div class="s"><span class="num">1</span><div><b>Check the budget</b><span>Stops before going over your limit</span></div></div>
+    <div class="s"><span class="num">2</span><div><b>Pack the envelope</b><span>Only what this step may see</span></div></div>
+    <div class="s"><span class="num">3</span><div><b>Send to the AI</b><span>Through OpenRouter, key kept safe</span></div></div>
+    <div class="s"><span class="num">4</span><div><b>Check the reply</b><span>Bad or cut-off replies are retried</span></div></div>
+    <div class="s"><span class="num">5</span><div><b>Save it</b><span>Answer, cost and envelope recorded</span></div></div>
+  </div>
+</div>
+
+<div class="facts">
+  <div class="fact"><b>21</b>calls for 4 agents</div>
+  <div class="fact"><b>$0.15–0.25</b>per run</div>
+  <div class="fact"><b>5–15</b>minutes per run</div>
+  <div class="fact"><b>Resume</b>any pause, nothing paid twice</div>
+</div>
+</body></html>

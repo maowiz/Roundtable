@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Where the Data Goes",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "question-path",
+        "label": "Question to answer",
+        "focus": [
+          "question",
+          "envelopes",
+          "gateway",
+          "papers",
+          "final"
+        ],
+        "note": "Your question becomes sealed envelopes, model replies become validated papers, and one final paper becomes the answer you read."
+      },
+      {
+        "id": "never-leaves",
+        "label": "What never leaves the PC",
+        "focus": [
+          "key",
+          "ledger",
+          "history"
+        ],
+        "note": "The key stays in Credential Manager. Every record stays in one SQLite file. Nothing is uploaded except each isolated request."
+      },
+      {
+        "id": "money",
+        "label": "Money trail",
+        "focus": [
+          "prices",
+          "envelopes",
+          "papers",
+          "ledger"
+        ],
+        "note": "Cost is estimated from the price catalog before sending and settled from real token counts after."
+      }
+    ],
+    "viewBox": [
+      1080,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "Inputs"
+    },
+    {
+      "label": "Prepare"
+    },
+    {
+      "label": "Outside the PC"
+    },
+    {
+      "label": "Check + store"
+    },
+    {
+      "label": "What you see"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "question",
+      "type": "frontend",
+      "label": "Question",
+      "sublabel": "+ context",
+      "stage": 0,
+      "row": 0,
+      "tag": "yours"
+    },
+    {
+      "id": "panel",
+      "type": "frontend",
+      "label": "Panel",
+      "sublabel": "seats · caps",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "key",
+      "type": "security",
+      "label": "API key",
+      "sublabel": "Credential Mgr",
+      "stage": 0,
+      "row": 2,
+      "tag": "never on disk"
+    },
+    {
+      "id": "envelopes",
+      "type": "backend",
+      "label": "Envelopes",
+      "sublabel": "aliased, per call",
+      "stage": 1,
+      "row": 0,
+      "tag": "isolation"
+    },
+    {
+      "id": "prices",
+      "type": "database",
+      "label": "Price catalog",
+      "sublabel": "verified rates",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "gateway",
+      "type": "cloud",
+      "label": "OpenRouter",
+      "sublabel": "4 models",
+      "stage": 2,
+      "row": 1,
+      "tag": "HTTPS"
+    },
+    {
+      "id": "papers",
+      "type": "security",
+      "label": "Papers",
+      "sublabel": "validated",
+      "stage": 3,
+      "row": 0,
+      "tag": "schema checked"
+    },
+    {
+      "id": "ledger",
+      "type": "database",
+      "label": "Ledger",
+      "sublabel": "SQLite",
+      "stage": 3,
+      "row": 2,
+      "tag": "single file"
+    },
+    {
+      "id": "final",
+      "type": "frontend",
+      "label": "Final answer",
+      "sublabel": "claims · sources",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "history",
+      "type": "frontend",
+      "label": "History",
+      "sublabel": "search · replay",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-question",
+      "from": "question",
+      "to": "envelopes",
+      "label": "task text",
+      "classification": "your words",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [
+        207,
+        126
+      ]
+    },
+    {
+      "id": "f-panel",
+      "from": "panel",
+      "to": "envelopes",
+      "label": "seat prompts + settings",
+      "classification": "frozen per run",
+      "variant": "default"
+    },
+    {
+      "id": "f-prices",
+      "from": "prices",
+      "to": "envelopes",
+      "label": "cost estimate",
+      "classification": "before sending",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "route": "straight",
+      "labelAt": [
+        315,
+        225
+      ]
+    },
+    {
+      "id": "f-send",
+      "from": "envelopes",
+      "to": "gateway",
+      "label": "one request per call",
+      "classification": "only that stage's view",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-key",
+      "from": "key",
+      "to": "gateway",
+      "label": "bearer header, used once",
+      "classification": "secret",
+      "variant": "security",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          530,
+          385
+        ]
+      ],
+      "labelAt": [
+        330,
+        372
+      ]
+    },
+    {
+      "id": "f-reply",
+      "from": "gateway",
+      "to": "papers",
+      "label": "JSON reply + usage + citations",
+      "classification": "untrusted until checked",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-store",
+      "from": "papers",
+      "to": "ledger",
+      "label": "accepted papers, digests",
+      "classification": "append only",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "route": "straight",
+      "labelAt": [
+        745,
+        290
+      ]
+    },
+    {
+      "id": "f-settle",
+      "from": "gateway",
+      "to": "ledger",
+      "label": "real token counts → settled cost",
+      "classification": "money",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-final",
+      "from": "papers",
+      "to": "final",
+      "label": "final paper",
+      "classification": "one per run",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-history",
+      "from": "ledger",
+      "to": "history",
+      "label": "runs, events, envelopes",
+      "classification": "read only",
+      "variant": "default",
+      "route": "straight",
+      "labelAt": [
+        853,
+        428
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Leaves the PC",
+      "items": [
+        "Each envelope, one at a time, over HTTPS",
+        "The key as a header on that one request",
+        "Nothing else: no history, no other seats' text"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Stays on the PC",
+      "items": [
+        "Every envelope, attempt, paper and event",
+        "The final answer and its sources",
+        "Your key, in Windows Credential Manager"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Checked before trusted",
+      "items": [
+        "Replies must match the paper schema",
+        "Aliases and claim ids are verified",
+        "A bad reply is retried, never stored as a paper"
+      ]
+    }
+  ]
+}

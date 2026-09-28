@@ -1,0 +1,42 @@
+const { chromium } = require('playwright');
+const fs = require('node:fs'); const path = require('node:path');
+const output = 'E:/round ribiom/output/ui/dark'; const base = 'http://127.0.0.1:4173/';
+(async () => {
+  fs.mkdirSync(output, { recursive: true });
+  const browser = await chromium.launch({ headless: true, channel: 'msedge' });
+  const context = await browser.newContext({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2, reducedMotion: 'reduce', colorScheme: 'dark' });
+  await context.addInitScript(() => { localStorage.setItem('roundtable-demo-theme', 'dark'); localStorage.setItem('roundtable-demo-draft', 'How should we launch a new product with a small team and a limited budget?'); });
+  const page = await context.newPage();
+  const snap = async (filename) => {
+    await page.setViewportSize({ width: 1600, height: 1000 });
+    const extra = await page.evaluate(() => { const m = document.querySelector('main'); return m ? Math.max(0, m.scrollHeight - m.clientHeight) : 0; });
+    await page.setViewportSize({ width: 1600, height: Math.min(1000 + Math.ceil(extra) + 12, 2000) });
+    await page.evaluate(() => document.querySelector('main')?.scrollTo(0, 0));
+    if (await page.getByRole('button', { name: 'Dismiss notification' }).count()) await page.getByRole('button', { name: 'Dismiss notification' }).click();
+    await page.screenshot({ path: path.join(output, filename) }); console.log('  ' + filename);
+  };
+  const scrub = async (ms) => { await page.evaluate(v => window.__rtSeek && window.__rtSeek(v), ms); await page.waitForTimeout(150); };
+  const screens = [['welcome','1-welcome'],['home','2-home'],['live','3-roundtable'],['result','4-final-answer'],['panels','5-ai-panels'],['history','6-history'],['settings','7-settings']];
+  for (const [s, f] of screens) { await page.goto(base + '?screen=' + s); await page.waitForSelector('h1'); if (s === 'live') { await scrub(12000); await page.locator('.table-seat').nth(1).hover(); } await snap(f + '.png'); }
+  await page.goto(base + '?screen=live'); await page.waitForSelector('h1');
+  await scrub(12000);
+  await page.locator('.table-seat').first().click();
+  await snap('8-seat-detail.png');
+  await page.getByRole('button', { name: 'Show matrix view' }).click();
+  await snap('8b-matrix.png');
+  await page.getByRole('button', { name: 'Show roundtable view' }).click();
+  await scrub(26500);
+  await snap('8c-synthesis.png');
+  await page.goto(base + '?screen=panels'); await page.waitForSelector('h1');
+  if (await page.getByRole('button', { name: 'Dismiss notification' }).count()) await page.getByRole('button', { name: 'Dismiss notification' }).click();
+  await page.locator('.seat-editor-card').first().click();
+  await page.getByRole('button', { name: 'Tuning' }).click();
+  await page.getByRole('button', { name: 'Seat limits' }).click();
+  await page.getByRole('slider', { name: 'Temperature' }).fill('0.5');
+  await page.locator('.num-field input').first().fill('900');
+  await page.locator('.acc-head').first().click();
+  await page.locator('.acc-head').first().click();
+  await snap('9-seat-tuning.png');
+  await page.getByRole('button', { name: 'Done', exact: true }).click();
+  await browser.close();
+})().catch(e => { console.error(e); process.exit(1); });

@@ -1,0 +1,371 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "One Roundtable Run",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "four-stages",
+        "label": "The four stages",
+        "focus": [
+          "question",
+          "answer",
+          "review",
+          "improve",
+          "synth",
+          "final"
+        ],
+        "note": "Answer alone, review everyone else, improve your own, then one final writer."
+      },
+      {
+        "id": "control",
+        "label": "Budget and retries",
+        "focus": [
+          "preflight",
+          "reserve",
+          "settle",
+          "retry",
+          "blocked"
+        ],
+        "note": "Every call reserves money first; failures retry up to three times; uncertain calls wait for you."
+      },
+      {
+        "id": "records",
+        "label": "What gets stored",
+        "focus": [
+          "ledger",
+          "papers",
+          "sources"
+        ],
+        "note": "Envelopes, attempts, papers and web sources are committed rows you can open later."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "you",
+      "label": "You"
+    },
+    {
+      "id": "stages",
+      "label": "Deliberation (N seats)"
+    },
+    {
+      "id": "guard",
+      "label": "Budget & recovery",
+      "variant": "exception"
+    },
+    {
+      "id": "records",
+      "label": "Ledger"
+    }
+  ],
+  "phases": [
+    {
+      "id": "setup",
+      "label": "Set up",
+      "fromCol": 0,
+      "toCol": 0
+    },
+    {
+      "id": "deliberate",
+      "label": "Deliberate in isolation",
+      "fromCol": 1,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "done",
+      "label": "Result",
+      "fromCol": 5,
+      "toCol": 5
+    }
+  ],
+  "groups": [
+    {
+      "id": "round",
+      "label": "N² + N + 1 fresh requests",
+      "lane": "stages",
+      "fromCol": 1,
+      "toCol": 4,
+      "variant": "emphasis"
+    },
+    {
+      "id": "recovery",
+      "label": "Stops that need you",
+      "lane": "guard",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "security"
+    }
+  ],
+  "mainPath": [
+    "question",
+    "preflight",
+    "answer",
+    "review",
+    "improve",
+    "synth",
+    "final"
+  ],
+  "nodes": [
+    {
+      "id": "question",
+      "lane": "you",
+      "col": 0,
+      "type": "external",
+      "label": "Question",
+      "sublabel": "panel + ceiling",
+      "width": 132
+    },
+    {
+      "id": "final",
+      "lane": "you",
+      "col": 5,
+      "type": "frontend",
+      "label": "Final answer",
+      "sublabel": "claims · conflicts",
+      "width": 132
+    },
+    {
+      "id": "preflight",
+      "lane": "stages",
+      "col": 0,
+      "type": "security",
+      "label": "Preflight",
+      "sublabel": "keys · prices · cost",
+      "width": 132
+    },
+    {
+      "id": "answer",
+      "lane": "stages",
+      "col": 1,
+      "type": "backend",
+      "label": "Independent answers",
+      "sublabel": "N calls, alone",
+      "tag": "web search optional",
+      "width": 132
+    },
+    {
+      "id": "review",
+      "lane": "stages",
+      "col": 2,
+      "type": "backend",
+      "label": "Peer reviews",
+      "sublabel": "N(N−1) calls",
+      "width": 132
+    },
+    {
+      "id": "improve",
+      "lane": "stages",
+      "col": 3,
+      "type": "backend",
+      "label": "Self-improvement",
+      "sublabel": "N calls, own reviews",
+      "width": 132
+    },
+    {
+      "id": "synth",
+      "lane": "stages",
+      "col": 4,
+      "type": "backend",
+      "label": "Final synthesis",
+      "sublabel": "1 call, shuffled",
+      "width": 132
+    },
+    {
+      "id": "reserve",
+      "lane": "guard",
+      "col": 1,
+      "type": "security",
+      "label": "Reserve budget",
+      "sublabel": "max cost first",
+      "width": 132
+    },
+    {
+      "id": "retry",
+      "lane": "guard",
+      "col": 3,
+      "type": "messagebus",
+      "label": "Retry",
+      "sublabel": "≤3 attempts",
+      "width": 132
+    },
+    {
+      "id": "blocked",
+      "lane": "guard",
+      "col": 4,
+      "type": "security",
+      "label": "Blocked",
+      "sublabel": "needs you",
+      "tag": "you resume",
+      "width": 132
+    },
+    {
+      "id": "settle",
+      "lane": "records",
+      "col": 1,
+      "type": "database",
+      "label": "Settle cost",
+      "sublabel": "actual cost",
+      "width": 132
+    },
+    {
+      "id": "ledger",
+      "lane": "records",
+      "col": 2,
+      "type": "database",
+      "label": "Envelopes + attempts",
+      "sublabel": "digest per call",
+      "width": 132
+    },
+    {
+      "id": "papers",
+      "lane": "records",
+      "col": 3,
+      "type": "database",
+      "label": "Papers",
+      "sublabel": "validated JSON",
+      "width": 132
+    },
+    {
+      "id": "sources",
+      "lane": "records",
+      "col": 4,
+      "type": "database",
+      "label": "Web sources",
+      "sublabel": "when search on",
+      "width": 132
+    }
+  ],
+  "edges": [
+    {
+      "id": "q-pre",
+      "from": "question",
+      "to": "preflight",
+      "label": "start",
+      "role": "main"
+    },
+    {
+      "id": "pre-ans",
+      "from": "preflight",
+      "to": "answer",
+      "label": "ready",
+      "role": "main"
+    },
+    {
+      "id": "ans-rev",
+      "from": "answer",
+      "to": "review",
+      "label": "A- aliases",
+      "role": "main"
+    },
+    {
+      "id": "rev-imp",
+      "from": "review",
+      "to": "improve",
+      "label": "R- aliases",
+      "role": "main"
+    },
+    {
+      "id": "imp-syn",
+      "from": "improve",
+      "to": "synth",
+      "label": "C- aliases",
+      "role": "main"
+    },
+    {
+      "id": "syn-fin",
+      "from": "synth",
+      "to": "final",
+      "label": "considered answer",
+      "role": "main"
+    },
+    {
+      "id": "ans-reserve",
+      "from": "answer",
+      "to": "reserve",
+      "label": "before each call",
+      "role": "branch"
+    },
+    {
+      "id": "reserve-settle",
+      "from": "reserve",
+      "to": "settle",
+      "label": "after reply",
+      "role": "branch"
+    },
+    {
+      "id": "imp-retry",
+      "from": "improve",
+      "to": "retry",
+      "label": "cut off / rate limit",
+      "role": "error"
+    },
+    {
+      "id": "retry-blocked",
+      "from": "retry",
+      "to": "blocked",
+      "label": "attempts exhausted",
+      "role": "error"
+    },
+    {
+      "id": "blocked-improve",
+      "from": "blocked",
+      "to": "improve",
+      "label": "resume",
+      "role": "return"
+    },
+    {
+      "id": "rev-ledger",
+      "from": "review",
+      "to": "ledger",
+      "label": "commit per call",
+      "role": "async"
+    },
+    {
+      "id": "imp-papers",
+      "from": "improve",
+      "to": "papers",
+      "label": "accepted only",
+      "role": "async"
+    },
+    {
+      "id": "syn-sources",
+      "from": "synth",
+      "to": "sources",
+      "label": "citations kept",
+      "role": "async"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Who sees what",
+      "items": [
+        "Answer: the question only",
+        "Review: one other answer, aliased",
+        "Improve: own answer + reviews"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Cost for 4 seats",
+      "items": [
+        "21 calls per run",
+        "$0.16 to $0.20 per run",
+        "Web search: +$0.007 per call"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Recovery",
+      "items": [
+        "Retries get more output room",
+        "Uncertain calls wait for you",
+        "Resume from the ledger"
+      ]
+    }
+  ]
+}

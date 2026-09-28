@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Roundtable AI Desktop Architecture",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "ask-path",
+        "label": "From question to answer",
+        "focus": [
+          "user",
+          "ui",
+          "host",
+          "engine",
+          "envelope",
+          "adapters",
+          "openrouter"
+        ],
+        "note": "The question enters the renderer, the host validates it, the engine builds isolated envelopes and dispatches real requests."
+      },
+      {
+        "id": "isolation",
+        "label": "Memory isolation",
+        "focus": [
+          "engine",
+          "envelope",
+          "ledger",
+          "schemas"
+        ],
+        "note": "Every call is a fresh request built only from committed ledger rows the stage may see; papers are validated before they are stored."
+      },
+      {
+        "id": "secrets-money",
+        "label": "Keys and money",
+        "focus": [
+          "secrets",
+          "credman",
+          "budget",
+          "prices",
+          "ledger"
+        ],
+        "note": "API keys never leave Credential Manager; every call reserves budget before dispatch and settles after."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "You",
+      "sublabel": "your question",
+      "pos": [
+        30,
+        210
+      ],
+      "size": [
+        110,
+        52
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Renderer",
+      "sublabel": "React 19 · Vite",
+      "pos": [
+        180,
+        210
+      ],
+      "size": [
+        130,
+        54
+      ],
+      "tag": "no keys, no SQL"
+    },
+    {
+      "id": "host",
+      "type": "security",
+      "label": "Tauri host",
+      "sublabel": "26 commands",
+      "pos": [
+        350,
+        210
+      ],
+      "size": [
+        140,
+        54
+      ],
+      "tag": "validated"
+    },
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "Engine",
+      "sublabel": "rt-engine",
+      "pos": [
+        540,
+        210
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "envelope",
+      "type": "backend",
+      "label": "Envelope builder",
+      "sublabel": "rt-envelope",
+      "pos": [
+        540,
+        80
+      ],
+      "size": [
+        150,
+        54
+      ],
+      "tag": "isolation"
+    },
+    {
+      "id": "schemas",
+      "type": "security",
+      "label": "Paper validator",
+      "sublabel": "rt-schemas",
+      "pos": [
+        740,
+        80
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "budget",
+      "type": "backend",
+      "label": "Budget",
+      "sublabel": "rt-budget",
+      "pos": [
+        540,
+        340
+      ],
+      "size": [
+        150,
+        54
+      ]
+    },
+    {
+      "id": "prices",
+      "type": "database",
+      "label": "Price catalog",
+      "sublabel": "contracts/prices",
+      "pos": [
+        540,
+        440
+      ],
+      "size": [
+        150,
+        50
+      ],
+      "tag": "verified only"
+    },
+    {
+      "id": "ledger",
+      "type": "database",
+      "label": "Ledger",
+      "sublabel": "SQLite",
+      "pos": [
+        350,
+        340
+      ],
+      "size": [
+        140,
+        54
+      ],
+      "tag": "immutable rows"
+    },
+    {
+      "id": "secrets",
+      "type": "security",
+      "label": "Secrets",
+      "sublabel": "rt-secrets",
+      "pos": [
+        350,
+        80
+      ],
+      "size": [
+        140,
+        54
+      ]
+    },
+    {
+      "id": "credman",
+      "type": "external",
+      "label": "Credential Manager",
+      "sublabel": "Windows",
+      "pos": [
+        180,
+        80
+      ],
+      "size": [
+        130,
+        54
+      ]
+    },
+    {
+      "id": "adapters",
+      "type": "backend",
+      "label": "Provider adapters",
+      "sublabel": "rt-adapters",
+      "pos": [
+        740,
+        210
+      ],
+      "size": [
+        150,
+        54
+      ],
+      "tag": "HTTPS only"
+    },
+    {
+      "id": "openrouter",
+      "type": "cloud",
+      "label": "OpenRouter",
+      "sublabel": "4 panel models",
+      "pos": [
+        920,
+        210
+      ],
+      "size": [
+        150,
+        54
+      ],
+      "tag": "web search"
+    },
+    {
+      "id": "direct",
+      "type": "cloud",
+      "label": "Direct providers",
+      "sublabel": "native APIs",
+      "pos": [
+        920,
+        340
+      ],
+      "size": [
+        150,
+        54
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Rust core (apps/desktop + crates)",
+      "wraps": [
+        "host",
+        "engine",
+        "envelope",
+        "schemas",
+        "budget",
+        "prices",
+        "ledger",
+        "secrets",
+        "adapters"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "user-ui",
+      "from": "user",
+      "to": "ui",
+      "label": "asks",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "ui-host",
+      "from": "ui",
+      "to": "host",
+      "label": "invoke + events",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "host-engine",
+      "from": "host",
+      "to": "engine",
+      "label": "run control",
+      "variant": "emphasis",
+      "labelAt": [
+        515,
+        320
+      ]
+    },
+    {
+      "id": "engine-envelope",
+      "from": "engine",
+      "to": "envelope",
+      "label": "reads saved papers",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        680,
+        160
+      ]
+    },
+    {
+      "id": "envelope-schemas",
+      "from": "envelope",
+      "to": "schemas",
+      "label": "validation ctx",
+      "labelDy": -19
+    },
+    {
+      "id": "schemas-engine",
+      "from": "schemas",
+      "to": "engine",
+      "label": "accepted paper",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        815,
+        160
+      ]
+    },
+    {
+      "id": "engine-adapters",
+      "from": "engine",
+      "to": "adapters",
+      "label": "wire request",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "adapters-openrouter",
+      "from": "adapters",
+      "to": "openrouter",
+      "label": "HTTPS + JSON mode",
+      "variant": "emphasis",
+      "labelDy": -19
+    },
+    {
+      "id": "adapters-direct",
+      "from": "adapters",
+      "to": "direct",
+      "label": "native APIs",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "labelAt": [
+        860,
+        300
+      ]
+    },
+    {
+      "id": "engine-budget",
+      "from": "engine",
+      "to": "budget",
+      "label": "reserve · settle",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        690,
+        300
+      ]
+    },
+    {
+      "id": "budget-prices",
+      "from": "budget",
+      "to": "prices",
+      "label": "per-token prices",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        690,
+        408
+      ]
+    },
+    {
+      "id": "engine-ledger",
+      "from": "engine",
+      "to": "ledger",
+      "label": "4-tx commit",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          615,
+          300
+        ],
+        [
+          420,
+          300
+        ]
+      ],
+      "labelAt": [
+        505,
+        290
+      ]
+    },
+    {
+      "id": "engine-secrets",
+      "from": "engine",
+      "to": "secrets",
+      "label": "key at dispatch",
+      "variant": "security",
+      "fromSide": "left",
+      "toSide": "bottom",
+      "via": [
+        [
+          515,
+          237
+        ],
+        [
+          515,
+          160
+        ],
+        [
+          420,
+          160
+        ]
+      ],
+      "labelAt": [
+        465,
+        178
+      ]
+    },
+    {
+      "id": "secrets-credman",
+      "from": "secrets",
+      "to": "credman",
+      "label": "keyring",
+      "variant": "security",
+      "labelDy": 14
+    }
+  ]
+}

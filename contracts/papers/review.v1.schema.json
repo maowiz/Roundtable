@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "roundtable://papers/review.v1",
+  "title": "Review paper v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "target_alias", "correct_claim_ids", "issues", "missing", "needs_external_verification"],
+  "properties": {
+    "schema_version": { "const": "review.v1" },
+    "target_alias": { "type": "string", "pattern": "^A-[A-Za-z0-9]{6,12}$" },
+    "correct_claim_ids": { "type": "array", "maxItems": 50, "items": { "type": "string", "pattern": "^C[0-9]{1,3}$" } },
+    "issues": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "explanation"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^I[0-9]{1,3}$" },
+          "target_claim_id": { "type": ["string", "null"], "pattern": "^C[0-9]{1,3}$" },
+          "explanation": { "type": "string", "minLength": 1, "maxLength": 1500 },
+          "suggested_correction": { "type": ["string", "null"], "maxLength": 1500 }
+        }
+      }
+    },
+    "missing": { "type": "array", "maxItems": 20, "items": { "type": "string", "minLength": 1, "maxLength": 500 } },
+    "needs_external_verification": { "type": "boolean" },
+    "self_rating": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+  }
+}

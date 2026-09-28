@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Memory: who sees what, at each step",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "review",
+        "label": "Step 2 · Review",
+        "focus": [
+          "answers",
+          "e2",
+          "a2"
+        ],
+        "note": "A reviewer gets the question and exactly one other answer, under a code name. Nothing else."
+      },
+      {
+        "id": "improve",
+        "label": "Step 3 · Improve",
+        "focus": [
+          "answers",
+          "reviews",
+          "e3",
+          "a3"
+        ],
+        "note": "An author gets back only its own answer and the reviews written about it."
+      },
+      {
+        "id": "final",
+        "label": "Step 4 · Final",
+        "focus": [
+          "improved",
+          "e4",
+          "a4"
+        ],
+        "note": "The final writer sees the improved answers, shuffled, with names hidden. Never the reviews."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "Saved · rt-ledger"
+    },
+    {
+      "label": "Sealed · rt-envelope"
+    },
+    {
+      "label": "Who reads it · the AI"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "q",
+      "type": "frontend",
+      "label": "Your question",
+      "sublabel": "in every envelope",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "answers",
+      "type": "database",
+      "label": "Answers",
+      "sublabel": "from step 1",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "reviews",
+      "type": "database",
+      "label": "Reviews",
+      "sublabel": "from step 2",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "improved",
+      "type": "database",
+      "label": "Improved",
+      "sublabel": "from step 3",
+      "stage": 0,
+      "row": 3
+    },
+    {
+      "id": "e1",
+      "type": "security",
+      "label": "Envelope 1",
+      "sublabel": "question only",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "e2",
+      "type": "security",
+      "label": "Envelope 2",
+      "sublabel": "+ one other answer",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "e3",
+      "type": "security",
+      "label": "Envelope 3",
+      "sublabel": "+ own answer, its reviews",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "e4",
+      "type": "security",
+      "label": "Envelope 4",
+      "sublabel": "+ all improved",
+      "stage": 1,
+      "row": 3
+    },
+    {
+      "id": "a1",
+      "type": "backend",
+      "label": "Each agent",
+      "sublabel": "answers alone",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "a2",
+      "type": "backend",
+      "label": "A reviewer",
+      "sublabel": "never knows whose",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "a3",
+      "type": "backend",
+      "label": "The author",
+      "sublabel": "fixes its own",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "a4",
+      "type": "backend",
+      "label": "Final writer",
+      "sublabel": "combines",
+      "stage": 2,
+      "row": 3
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-q",
+      "from": "q",
+      "to": "e1",
+      "label": "question",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "f-a2",
+      "from": "answers",
+      "to": "e2",
+      "label": "1 answer, coded",
+      "variant": "security",
+      "route": "straight"
+    },
+    {
+      "id": "f-a3",
+      "from": "answers",
+      "to": "e3",
+      "label": "own only",
+      "variant": "security"
+    },
+    {
+      "id": "f-r3",
+      "from": "reviews",
+      "to": "e3",
+      "label": "about it only",
+      "variant": "security",
+      "route": "straight",
+      "labelAt": [
+        210,
+        432
+      ]
+    },
+    {
+      "id": "f-i4",
+      "from": "improved",
+      "to": "e4",
+      "label": "shuffled",
+      "variant": "security",
+      "route": "straight"
+    },
+    {
+      "id": "s1",
+      "from": "e1",
+      "to": "a1",
+      "label": "blank memory",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "s2",
+      "from": "e2",
+      "to": "a2",
+      "label": "blank memory",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "s3",
+      "from": "e3",
+      "to": "a3",
+      "label": "blank memory",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "s4",
+      "from": "e4",
+      "to": "a4",
+      "label": "blank memory",
+      "variant": "emphasis",
+      "route": "straight"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Blank memory",
+      "items": [
+        "Every call starts fresh",
+        "No chat history, ever"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Names hidden",
+      "items": [
+        "Answers travel as codes like A-7K2",
+        "No AI knows which AI wrote what"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Provable",
+      "items": [
+        "Every envelope is saved",
+        "Open any one later and check it"
+      ]
+    }
+  ]
+}
